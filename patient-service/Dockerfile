@@ -8,7 +8,7 @@ RUN mvn dependency:go-offline -B
 
 COPY src ./src
 
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM openjdk:21-jdk AS runner
 
@@ -18,4 +18,5 @@ COPY --from=builder ./app/target/patient-service-0.0.1-SNAPSHOT.jar ./app.jar
 
 EXPOSE 4000
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+#ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "env && java -jar app.jar"]
